@@ -1,50 +1,54 @@
-## Arrow Everest Board RISC-V Designs
+## Arrow-Everest-Board RISC-V Designs for Libero v12.1
 
-This repository contains Libero projects for the following soft core RISC-V processors:
-* MIV_RV32IMA_L1_AHB
-* MIV_RV32IMA_L1_AXI
-* MiV_RV32IMAF_L1_AHB
-* MiV_RV32IMC
+Sample Mi-V Libero projects for the Arrow Everest Board (MPF300T_ES)
 
-FlashPro Express projects containing pre-generated programming files are also available for each of the designs.
+To get your design download or clone this repository. The files consist of .tcl file that is the main script that builds the design and support files that are called by it to provide constraints and components for the design. Follow the instructions below to build your own design or alternatively use the pre-generated Programming Files in this repository.
 
-To download or clone the repository:
+**Note**: Unpack repository files to a file path not longer than 50 characters, as the project requires
+a lengthy file path and some OS systems have limits. **Not providing
+a sufficient file path for the project will result in errors**.
 
-    $ git clone https://github.com/RISCV-on-Microsemi-FPGA/Arrow-Everest-Board.git
+#### Follow these steps
 
-    $ Running from the zipped sources
-    1. Download the zipped sources via the "Clone or download" button using "Download Zip" button
-    2. Unzip the sources
+- Launch Libero v12.1 on your computer. Wait for Libero to start.
+- Make sure you have __Downloaded the latest Libero Cores__. Select Catalog tab from the left hand side toolbar and click __"Download Latest Cores"__ option by a yellow marked area, this option will only be visible if you don't have the latest Cores.
+- Press "CTRL+U" to display the "Execute Script" menu. Alternatively, click Project from the top left hand corner of Libero Suite and select "Execute Script" from there.
+- Examine the image below, the purpose of the marked fields is listed.
+
+ ![Execute_Script](images/libero_execute.PNG)
+
+1. Click the "..." button and enter the directory in which the main .tcl file is that you have downloaded with your sample project. This file
+is what Libero executes to build your design.
+2. Click Run to execute the script and build the design. Wait for Libero to finish building, a window should appear once the script execution is finished.
+
+###### Optional Step
+
+3. Arguments field is optional and can be left blank. An argument can take the user further in Libero's design flow, examine the image below and try entering an argument in before clicking 'Run'. One of the following arguments can be entered:
+      - Synthesize
+      - Place_and_Route
+      - Generate_Bitstream
+      - Generate_Programming_File
 
 
-# Libero Projects
-The Libero_Projects folder contains sample Mi-V Libero designs.
+![Script's_Arguments](images/libero_execute_optional.png)
 
-## Design Features
-The Libero designs include the following features:
-* A soft RISC-V [processor](https://github.com/RISCV-on-Microsemi-FPGA/CPUs)
-* A RISC-V debug block allowing on-target debug using SoftConsole
-* The operating frequency of the design is 50MHz
-* Target memory is RAM
-* User peripherals (GPIO, Timers, UART)
+#### Programming the Device using FPExpress
 
-## Target Hardware
-Details of the Arrow-Everest-Board and it's features can be found:
-* [EVEREST-DEV-BOARD](https://www.microsemi.com/existing-parts/parts/143998) (MPF300TS_ES)
+The projects contain Programming Files on the same level as the .tcl script. These programming files can be used to program your target device using the standalone installer for FlashPro Express which can be found [here](https://www.microsemi.com/product-directory/programming/4977-flashpro#software).
+Please note that you only need to install this standalone version of FlashPro Express if you do not have Libero tools installed. The programming procedure is simple:
+1. Launch FPExpress and wait for it to load.
+2. Click into Project from the top left bar and select "New Job Project from FlashPro Express Job"
+3. Navigate to your Job Programming File located inside your project folder beside your .tcl script.
+4. For your directory, select the directory in which the Job file was located in and click OK.
+5. On the next screen, from the bottom left drop-down menu select the PROGRAM option and clikc RUN. Wait for device to be programmed.
 
-# FlashPro Express
-The FlashPro_Express_Projects folder contains the pre-generated programming files, which can be downloaded directly to the target board using FlashPro Express.
 
-# Design Tools
-The following design tools are required.
+#### Notes
 
-## Libero SoC v12.5
-[Libero SoC](https://www.microsemi.com/products/fpga-soc/design-resources/design-software/libero-soc#downloads) is Microsemi's FPGA design software.
-
-## FlashPro Express
-[FlashPro Express](http://www.microsemi.com/products/fpga-soc/design-resources/programming/flashpro#software) is Microsemi's Programming and debug tool. It is included in the Libero SoC software and is also
-available as a standalone application. Please note, that if Libero SoC is already on your system, you do not need
-the standalone version.
-
-## SoftConsole
-[SoftConsole](https://www.microsemi.com/product-directory/design-tools/4879-softconsole) is Microsemi’s free software development environment facilitating the rapid development of bare-metal and RTOS based C/C++ software for Microsemi CPU and SoC based FPGAs. It provides development and debug support for all Microsemi SoC FPGAs and 32-bit soft IP CPUs. SoftConsole can be downloaded.
+- Currently the designs support MiV_RV32IMA_L1_AHB Core only, Core MiV_RV32IMA_L1_AXI will be implemented in the next update
+- The project is built in the same folder as the script.
+- If you stop the execution of a the script halfway the project can get corrupted. If this happens, delete the project folder created by Libero and execute the script again, otherwise just try running the script again.
+- The arguments serve the purpose to take the user further down the design flow, they use the most optimal settings for design build.
+- Use the argument "Place_and_Route" or any argument after; The design will be built using an optimal place and route seed so, that the design's signal data path doesn't cause timing violations.
+- If you don't feel like building a design to program the board, you can find the exported bitstream files in the project's folder.
+- Only one argument can be entered and no spaces are allowed. The arguments are not case sensitive, if no argument is entered the sample design will be fully built to pre-synthesis stage.
